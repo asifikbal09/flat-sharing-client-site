@@ -46,7 +46,7 @@ const flats = [
   },
   {
     id: 5,
-    title: "Artist's Haven with Garde",
+    title: "Artist's Haven with Garden",
     location: "Park Slope, Brooklyn",
     image: "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&h=600&fit=crop",
     description: "Creative space with natural light, private garden access, and quiet neighborhood.",

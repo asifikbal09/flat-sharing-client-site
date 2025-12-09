@@ -12,7 +12,7 @@ const Navbar = () => {
     { name: "Find Flats", href: "#find" },
     { name: "List Your Space", href: "#list" },
     { name: "How It Works", href: "#how-it-works" },
-    { name: "About", href: "#about" },
+    { name: "About", href: "/about" },
   ];
 
   return (
@@ -32,15 +32,16 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
                 href={link.href}
                 className="text-muted-foreground hover:text-foreground transition-colors duration-200 text-sm font-medium"
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
           </div>
+          
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">

@@ -3,7 +3,7 @@ import LoginForm from "./components/LoginForm";
 import { HomeIcon } from "lucide-react";
 
 
-const Login = () => {
+const page = () => {
   return (
     <div className="min-h-screen bg-gradient-hero flex">
       {/* Left Side - Form */}
@@ -33,7 +33,7 @@ const Login = () => {
           {/* Sign Up Link */}
           <p className="text-center text-muted-foreground">
             Dont have an account?{" "}
-            <Link href="/signup" className="text-primary hover:text-primary/80 font-semibold">
+            <Link href="/sign-up" className="text-primary hover:text-primary/80 font-semibold">
               Sign up for free
             </Link>
           </p>
@@ -61,4 +61,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default page;

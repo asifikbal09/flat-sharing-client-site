@@ -1,9 +1,10 @@
 "use client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Home } from "lucide-react";
+import { Menu, X, Home, Search } from "lucide-react";
 import Link from "next/link";
 import "../../app/globals.css";
+import { getUser } from "@/utils/getUser";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +15,8 @@ const Navbar = () => {
     { name: "How It Works", href: "#how-it-works" },
     { name: "About", href: "/about" },
   ];
+
+
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/50">
@@ -46,11 +49,14 @@ const Navbar = () => {
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
             <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-              Sign In
+             <Search/> Search
             </Button>
+            
+            <Link href="/login">
             <Button size="sm" className="bg-gradient-primary hover:opacity-90 transition-opacity shadow-soft">
-              Get Started
+            Login
             </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -80,9 +86,11 @@ const Navbar = () => {
                 <Button variant="ghost" className="justify-start text-muted-foreground">
                   Sign In
                 </Button>
+                <Link href="/Login">
                 <Button className="bg-gradient-primary hover:opacity-90 transition-opacity shadow-soft">
-                  Get Started
+                  Login
                 </Button>
+                </Link>
               </div>
             </div>
           </div>

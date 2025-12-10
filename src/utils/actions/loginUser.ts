@@ -1,6 +1,6 @@
 "use server";
 
-import { LoginFormData } from "@/app/login/components/LoginForm";
+import { LoginFormData } from "@/app/(authLayout)/login/components/LoginForm";
 
 export const loginUser = async (payload: LoginFormData) => {
   const res = await fetch(`${process.env.BACKEND_LINK}/login`, {

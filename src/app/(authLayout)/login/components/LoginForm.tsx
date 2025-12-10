@@ -17,6 +17,7 @@ import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { loginUser } from '@/utils/actions/loginUser';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const loginSchema = z.object({
   email: z.email("Please enter a valid email address"),
@@ -39,6 +40,7 @@ const LoginForm = () => {
       });
     
       const onSubmit = async(data: LoginFormData) => {
+        const toastId = toast.loading("Logging in...");
         console.log("Login data:", data);
         try {
             
@@ -46,10 +48,12 @@ const LoginForm = () => {
             if(userInfo?.data?.token){
                 localStorage.setItem("access-token", userInfo.data.token);
                 route.push("/")
+                toast.success("Logged in successfully!", {id: toastId})
             }
 
         } catch (err) {
             console.log(err)
+            toast.error("Login failed. Please try again.", {id: toastId})
         }
       };
     return (

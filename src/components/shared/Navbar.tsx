@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Home, Search } from "lucide-react";
 import Link from "next/link";
 import "../../app/globals.css";
-import { getUser } from "@/utils/getUser";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);

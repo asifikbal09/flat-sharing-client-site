@@ -1,6 +1,7 @@
 "use server";
 
 import { LoginFormData } from "@/app/(authLayout)/login/components/LoginForm";
+import { cookies } from "next/headers";
 
 export const loginUser = async (payload: LoginFormData) => {
   const res = await fetch(`${process.env.BACKEND_LINK}/login`, {
@@ -13,5 +14,7 @@ export const loginUser = async (payload: LoginFormData) => {
   });
 
   const userInfo = await res.json();
+  const cookie = await cookies()
+    cookie.set("accessToken", userInfo.data.token, { httpOnly: true, path: '/' });
   return userInfo;
 };

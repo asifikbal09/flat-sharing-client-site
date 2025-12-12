@@ -19,6 +19,7 @@ import { loginUser } from '@/utils/actions/loginUser';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
+
 const loginSchema = z.object({
   email: z.email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
@@ -45,8 +46,9 @@ const LoginForm = () => {
         try {
             
             const userInfo = await loginUser(data);
-            if(userInfo?.data?.token){
-                localStorage.setItem("access-token", userInfo.data.token);
+          
+            if(userInfo?.success){
+                // localStorage.setItem("access-token", userInfo.data.token);
                 route.push("/")
                 toast.success("Logged in successfully!", {id: toastId})
             }

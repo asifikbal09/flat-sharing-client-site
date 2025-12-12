@@ -11,7 +11,7 @@ const Navbar = () => {
   const navLinks = [
     { name: "Find Flats", href: "#find" },
     { name: "List Your Space", href: "#list" },
-    { name: "How It Works", href: "#how-it-works" },
+    { name: "Dashboard", href: "/dashboard" },
     { name: "About", href: "/about" },
   ];
 

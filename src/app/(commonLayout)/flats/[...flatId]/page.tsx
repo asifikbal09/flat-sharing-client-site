@@ -5,51 +5,29 @@ import {
   Home,
   SquareStack,
   Calendar,
-  IndianRupee,
   CheckCircle,
   XCircle,
-  ChevronLeft,
-  ChevronRight,
   Zap,
   Phone,
   MessageSquare,
+  DollarSign,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import Image from "next/image";
 import FlatCarousel from "./FlatCarousel";
 
-// Mock data for a single flat (matching the Prisma model)
-const mockFlat = {
-  id: "1",
-  squareFeet: 1200,
-  totalBedrooms: 2,
-  totalRooms: 4,
-  imageUrls: [
-    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
-    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
-    "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop",
-    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
-  ],
-  utilitiesDescription:
-    "Electricity and water included. High-speed WiFi available. Gas connection for cooking. 24/7 security with CCTV surveillance.",
-  location: "Koramangala 5th Block, Bangalore, Karnataka 560095",
-  description:
-    "Beautiful and spacious 2BHK apartment in the heart of Koramangala. This fully furnished flat features modern amenities, a well-equipped kitchen, and a cozy living area. Perfect for working professionals or small families. Located close to major IT parks, shopping centers, and public transportation. The apartment receives ample natural light and has excellent ventilation.",
-  rent: 25000,
-  availability: true,
-  advanceAmount: 50000,
-  createdAt: new Date("2024-01-15"),
-  updatedAt: new Date("2024-01-20"),
+type TParams = {
+  params: { flatId: string };
 };
 
-const FlatDetails = () => {
-  const id = mockFlat.id;
-
-  const flat = mockFlat;
+const FlatDetails = async ({ params }: TParams) => {
+  const param = await params;
+  const res = await fetch(`${process.env.BACKEND_LINK}/flats/${param.flatId}`, {
+    cache: "no-store",
+  });
+  const { data: flat } = await res.json();
 
   return (
     <div className="min-h-screen bg-background">
@@ -66,7 +44,7 @@ const FlatDetails = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column - Images and Details */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 space-y-6">
               {/* Image Gallery */}
               <FlatCarousel
                 imageUrls={flat.imageUrls}
@@ -112,7 +90,7 @@ const FlatDetails = () => {
                         Monthly Rent
                       </p>
                       <p className="text-3xl font-bold text-foreground flex items-center">
-                        <IndianRupee className="h-6 w-6" />
+                        <DollarSign className="h-6 w-6" />
                         {flat.rent.toLocaleString()}
                       </p>
                     </div>
@@ -129,7 +107,7 @@ const FlatDetails = () => {
                       Advance Amount
                     </span>
                     <span className="font-semibold">
-                      ₹{flat.advanceAmount.toLocaleString()}
+                      ${flat.advanceAmount.toLocaleString()}
                     </span>
                   </div>
 
@@ -167,7 +145,14 @@ const FlatDetails = () => {
                       <div>
                         <p className="text-xs text-muted-foreground">Posted</p>
                         <p className="font-semibold text-xs">
-                          {flat.createdAt.toLocaleDateString()}
+                          {new Date(flat.createdAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            }
+                          )}
                         </p>
                       </div>
                     </div>
@@ -193,7 +178,7 @@ const FlatDetails = () => {
                       size="lg"
                       asChild
                     >
-                      <Link href={`/flats/${id}/request`}>
+                      <Link href={`/flats/${flat.id}/request`}>
                         <MessageSquare className="h-4 w-4" />
                         Request Flat Share
                       </Link>

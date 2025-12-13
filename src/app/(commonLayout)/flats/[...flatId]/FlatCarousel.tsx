@@ -25,7 +25,7 @@ const FlatCarousel = ({ imageUrls, availability }: FlatCarouselProps) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="relative rounded-2xl overflow-hidden">
         <Image
           src={imageUrls[currentImageIndex]}

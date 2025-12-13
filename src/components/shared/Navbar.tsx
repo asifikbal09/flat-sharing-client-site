@@ -4,18 +4,30 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Home, Search } from "lucide-react";
 import Link from "next/link";
 import "../../app/globals.css";
+import { logOut } from "@/utils/actions/logoutUser";
+import { useAuth } from "@/lib/AuthProviders";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-const Navbar = () => {
+const Navbar = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const { setUser } = useAuth();
+
+  const handleLogout = async () => {
+const toastId = toast.loading("Logging out...");
+     await logOut()
+    setUser(null)
+    router.push("/")
+    toast.success("Logged out successfully!", { id: toastId });
+  }
 
   const navLinks = [
     { name: "Find Flats", href: "#find" },
     { name: "List Your Space", href: "#list" },
-    { name: "Dashboard", href: "/dashboard" },
+    ...(user ? [{ name: "Dashboard", href: "/dashboard" }] : []),
     { name: "About", href: "/about" },
   ];
-
-
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/50">
@@ -43,19 +55,35 @@ const Navbar = () => {
               </Link>
             ))}
           </div>
-          
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
-             <Search/> Search
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <Search /> Search
             </Button>
-            
-            <Link href="/login">
-            <Button size="sm" className="bg-gradient-primary hover:opacity-90 transition-opacity shadow-soft">
-            Login
-            </Button>
-            </Link>
+
+            {user ? (
+              <Button
+                size="sm"
+                className="bg-gradient-primary hover:opacity-90 transition-opacity shadow-soft"
+                onClick={handleLogout}
+              >
+                Log Out
+              </Button>
+            ) : (
+              <Link href="/login">
+                <Button
+                  size="sm"
+                  className="bg-gradient-primary hover:opacity-90 transition-opacity shadow-soft"
+                >
+                  Login
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -82,13 +110,17 @@ const Navbar = () => {
                 </a>
               ))}
               <div className="flex flex-col gap-2 pt-4 border-t border-border/50">
-                <Button variant="ghost" className="justify-start text-muted-foreground">
+                <Button
+                  variant="ghost"
+                  className="justify-start text-muted-foreground"
+                >
                   Sign In
                 </Button>
-                <Link href="/Login">
-                <Button className="bg-gradient-primary hover:opacity-90 transition-opacity shadow-soft">
-                  Login
-                </Button>
+
+                <Link href="/login">
+                  <Button className="bg-gradient-primary hover:opacity-90 transition-opacity shadow-soft">
+                    Login
+                  </Button>
                 </Link>
               </div>
             </div>

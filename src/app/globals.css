@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -81,6 +80,7 @@
   --sidebar-accent-foreground: oklch(0.28 0.03 40);
   --sidebar-border: oklch(0.93 0.01 80);
   --sidebar-ring: oklch(0.73 0.15 55);
+  --sidebar: hsl(0 0% 98%);
 }
 
 /* ---------------------------------------------
@@ -124,6 +124,7 @@
   --sidebar-accent-foreground: oklch(0.90 0.01 90);
   --sidebar-border: oklch(0.28 0.015 40);
   --sidebar-ring: oklch(0.75 0.18 60);
+  --sidebar: hsl(240 5.9% 10%);
 }
 
 /* ---------------------------------------------
@@ -171,3 +172,12 @@
     .bg-gradient-secondary {
     background-image: linear-gradient(135deg, hsl(180 35% 45%), hsl(170 40% 50%));
   }
+
+    @layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

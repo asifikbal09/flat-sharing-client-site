@@ -16,7 +16,9 @@ import {
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
-import Link from 'next/link';
+import { toast } from 'sonner';
+import { signupUser } from '@/utils/actions/signupUser';
+import { useRouter } from 'next/navigation';
 
 const signupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100),
@@ -27,11 +29,11 @@ const signupSchema = z.object({
   address: z.string().max(200, "Address must be less than 200 characters").optional(),
 });
 
-type SignupFormData = z.infer<typeof signupSchema>;
+export type SignupFormData = z.infer<typeof signupSchema>;
 
 const SignUpForm = () => {
       const [showPassword, setShowPassword] = useState(false);
-//   const { toast } = useToast();
+      const [disabled, setDisabled] = useState(false);
 
   const form = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
@@ -44,22 +46,26 @@ const SignUpForm = () => {
       address: "",
     },
   });
+  const route = useRouter()
 
-  const onSubmit = (data: SignupFormData) => {
-    // Data object ready to send to backend
-    const payload = {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      bio: data.bio || "",
-      profession: data.profession || "",
-      address: data.address || "",
-    };
-    console.log("Signup payload:", payload);
-    // toast({
-    //   title: "Account Created!",
-    //   description: "Welcome to FlatFinder. Start exploring your dream home.",
-    // });
+  const onSubmit =async (data: SignupFormData) => {
+    setDisabled(true);
+   const toastId = toast.loading("Creating your account...");
+    try {
+      const res = await signupUser(data)
+      if (res.success) {
+        toast.success("Account created successfully! Please log in.", { id: toastId });
+        form.reset();
+        route.push("/login");
+      } else {
+        toast.error("Failed to create account. Please try again.", { id: toastId });
+      }
+      setDisabled(false);
+
+    }catch (error) {
+      toast.error("Failed to create account. Please try again.", { id: toastId });
+      setDisabled(false);
+    }
   };
 
     return (
@@ -207,6 +213,7 @@ const SignUpForm = () => {
                 />
 
                 <Button
+                disabled={disabled}
                   type="submit"
                   className="w-full h-12 bg-gradient-primary hover:opacity-90 text-primary-foreground font-semibold shadow-soft"
                 >

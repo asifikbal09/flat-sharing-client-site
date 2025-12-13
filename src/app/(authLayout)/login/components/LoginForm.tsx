@@ -10,7 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import z from 'zod';
+import z, { set } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
@@ -29,6 +29,7 @@ export type LoginFormData = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
      const [showPassword, setShowPassword] = useState(false);
+     const [disabled, setDisabled] = useState(false);
     //   const { toast } = useToast();
     
     const route = useRouter()
@@ -41,6 +42,7 @@ const LoginForm = () => {
       });
     
       const onSubmit = async(data: LoginFormData) => {
+        setDisabled(true);
         const toastId = toast.loading("Logging in...");
         console.log("Login data:", data);
         try {
@@ -52,10 +54,12 @@ const LoginForm = () => {
                 route.push("/")
                 toast.success("Logged in successfully!", {id: toastId})
             }
+            setDisabled(false);
 
         } catch (err) {
             console.log(err)
             toast.error("Login failed. Please try again.", {id: toastId})
+            setDisabled(false);
         }
       };
     return (
@@ -115,24 +119,8 @@ const LoginForm = () => {
                     </FormItem>
                   )}
                 />
-
-                {/* <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
-                    />
-                    <span className="text-sm text-muted-foreground">Remember me</span>
-                  </label>
-                  <Link
-                    href="/forgot-password"
-                    className="text-sm text-primary hover:text-primary/80 font-medium"
-                  >
-                    Forgot password?
-                  </Link>
-                </div> */}
-
                 <Button
+                disabled={disabled}
                   type="submit"
                   className="w-full h-12 bg-gradient-primary hover:opacity-90 text-primary-foreground font-semibold shadow-soft"
                 >

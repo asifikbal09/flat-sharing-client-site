@@ -2,18 +2,17 @@ import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-
 const AuthRouts = ["/login", "/register"];
 const roleBasedPrivateRoutes = {
-  user: [/^\/dashboard$/, "my-flats", "my-requests", "setting"],
+  user: [/^\/dashboard$/, "my-flats", "my-requests", "setting", /^\/flats/],
   admin: [/^\/dashboard\/admin/],
 };
-type Role = keyof typeof roleBasedPrivateRoutes
+type Role = keyof typeof roleBasedPrivateRoutes;
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const cookie = await cookies();
   const accessToken = cookie.get("accessToken")?.value;
-  console.log("token",accessToken)
+  console.log("token", accessToken);
   if (!accessToken) {
     if (AuthRouts.includes(pathname)) {
       return NextResponse.next();
@@ -22,19 +21,18 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  let decodedData =null;
-  decodedData = jwtDecode(accessToken) ;
-  console.log(decodedData)
+  let decodedData = null;
+  decodedData = jwtDecode(accessToken);
   const role = (decodedData?.role).toLowerCase();
-  if(role && roleBasedPrivateRoutes[role as Role] ){
-    const routes =roleBasedPrivateRoutes[role as Role]
-    if(routes.some((route)=>pathname.match(route))){
-        return NextResponse.next()
+  if (role && roleBasedPrivateRoutes[role as Role]) {
+    const routes = roleBasedPrivateRoutes[role as Role];
+    if (routes.some((route) => pathname.match(route))) {
+      return NextResponse.next();
     }
   }
   return NextResponse.redirect(new URL("/", request.url));
 }
 
 export const config = {
-    matcher: ['/login',"/register", '/dashboard/:page*'],
-  }
+  matcher: ["/login", "/register", "/flats/:flatId*", "/dashboard/:page*"],
+};

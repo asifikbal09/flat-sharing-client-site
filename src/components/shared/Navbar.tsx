@@ -15,15 +15,15 @@ const Navbar = ({ user }) => {
   const { setUser } = useAuth();
 
   const handleLogout = async () => {
-const toastId = toast.loading("Logging out...");
-     await logOut()
-    setUser(null)
-    router.push("/")
+    const toastId = toast.loading("Logging out...");
+    await logOut();
+    setUser(null);
+    router.push("/");
     toast.success("Logged out successfully!", { id: toastId });
-  }
+  };
 
   const navLinks = [
-    { name: "Find Flats", href: "#find" },
+    { name: "Find Flats", href: "/flats" },
     { name: "List Your Space", href: "#list" },
     ...(user ? [{ name: "Dashboard", href: "/dashboard" }] : []),
     { name: "About", href: "/about" },

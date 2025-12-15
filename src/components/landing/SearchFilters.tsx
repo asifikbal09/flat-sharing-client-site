@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Search } from "lucide-react";
+import { Home, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
@@ -24,7 +24,6 @@ const SearchFilters = () => {
             <div className="flex justify-center mb-6">
               <div className="inline-flex  rounded-lg p-1">
                 {tabs.map((tab) => (
-                    
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,8 @@ import { useAuth } from "@/lib/AuthProviders";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-const Navbar = ({ user }) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Navbar = ({ user }: { user: any }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const { setUser } = useAuth();

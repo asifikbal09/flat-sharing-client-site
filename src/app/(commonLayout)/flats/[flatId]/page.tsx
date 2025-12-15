@@ -17,9 +17,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import FlatCarousel from "./FlatCarousel";
+import { TFlat } from "@/components/landing/FeatueredFlat";
 
 type TParams = {
   params: { flatId: string };
+};
+
+export const generateStaticParams = async () => {
+  const res = await fetch(`${process.env.BACKEND_LINK}/flats`);
+  const { data: flats } = await res.json();
+
+  return flats?.slice(0, 6).map((flat: TFlat) => ({
+    flatId: flat.id,
+  }));
 };
 
 const FlatDetails = async ({ params }: TParams) => {

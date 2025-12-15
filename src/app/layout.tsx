@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "sonner";
 import { Providers } from "@/lib/Providers";
 
 const geistSans = Geist({
@@ -17,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "FlatMate - Find Your Perfect Flatmate",
   description: "Making shared living simple, safe, and social.",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
@@ -8,6 +9,13 @@ const roleBasedPrivateRoutes = {
   admin: [/^\/dashboard\/admin/],
 };
 type Role = keyof typeof roleBasedPrivateRoutes;
+interface IUserJwtPayload {
+  id: string;
+  role: string;
+  email: string;
+  exp?: number;
+  iat?: number;
+}
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const cookie = await cookies();
@@ -22,8 +30,8 @@ export async function proxy(request: NextRequest) {
   }
 
   let decodedData = null;
-  decodedData = jwtDecode(accessToken);
-  const role = (decodedData?.role).toLowerCase();
+  decodedData = jwtDecode<IUserJwtPayload>(accessToken);
+  const role = decodedData.role.toLowerCase();
   if (role && roleBasedPrivateRoutes[role as Role]) {
     const routes = roleBasedPrivateRoutes[role as Role];
     if (routes.some((route) => pathname.match(route))) {

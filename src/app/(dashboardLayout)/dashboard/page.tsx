@@ -16,6 +16,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { cookies } from "next/headers";
+import Image from "next/image";
 
 // Mock data - replace with real data later
 const recentPosts = [
@@ -37,19 +39,7 @@ const recentRequests = [
   },
 ];
 
-// Set to empty arrays to test empty state
-const mockPosts: typeof recentPosts = [];
-const mockRequests: typeof recentRequests = [];
-
-const profile = {
-  name: "Asif Ikbal",
-  email: "asif@mail.com",
-  bio: "I am a very good boy",
-  profession: "Student",
-  address: "Dhaka Bangladesh",
-};
-
-const UserDashboard = () => {
+const UserDashboard = async () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "approved":
@@ -60,7 +50,17 @@ const UserDashboard = () => {
         return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
     }
   };
+  const cookie = await cookies();
 
+  const res = await fetch(`${process.env.BACKEND_LINK}/profile`, {
+    cache: "no-store",
+    headers: {
+      Authorization: cookie.get("accessToken")?.value || "",
+    },
+  });
+  const data = await res.json();
+
+  const userData = data.data;
   return (
     <div className="space-y-6">
       {/* Profile Header Card */}
@@ -69,15 +69,25 @@ const UserDashboard = () => {
         <CardContent className="relative pt-0">
           <div className="flex flex-col sm:flex-row gap-4 -mt-12">
             <div className="h-24 w-24 rounded-full bg-primary/10 border-4 border-background flex items-center justify-center shadow-lg">
-              <User className="h-12 w-12 text-primary" />
+              {!userData.imageUrl ? (
+                <Image
+                  src={userData.imageUrl}
+                  alt="User Avatar"
+                  width={96}
+                  height={96}
+                  className="h-24 w-24 rounded-full object-cover"
+                />
+              ) : (
+                <User className="h-12 w-12 text-primary" />
+              )}
             </div>
             <div className="flex-1 pt-2 sm:pt-8">
               <h2 className="text-2xl font-bold text-foreground">
-                {profile.name}
+                {userData.name}
               </h2>
               <p className="text-muted-foreground flex items-center gap-2 mt-1">
                 <Briefcase className="h-4 w-4" />
-                {profile.profession}
+                {userData.profession}
               </p>
             </div>
           </div>
@@ -87,21 +97,21 @@ const UserDashboard = () => {
               <Mail className="h-5 w-5 text-primary" />
               <div>
                 <p className="text-xs text-muted-foreground">Email</p>
-                <p className="text-sm font-medium">{profile.email}</p>
+                <p className="text-sm font-medium">{userData.email}</p>
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
               <MapPin className="h-5 w-5 text-primary" />
               <div>
                 <p className="text-xs text-muted-foreground">Address</p>
-                <p className="text-sm font-medium">{profile.address}</p>
+                <p className="text-sm font-medium">{userData.address}</p>
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 sm:col-span-2 lg:col-span-1">
               <FileText className="h-5 w-5 text-primary" />
               <div>
                 <p className="text-xs text-muted-foreground">Bio</p>
-                <p className="text-sm font-medium">{profile.bio}</p>
+                <p className="text-sm font-medium">{userData.bio}</p>
               </div>
             </div>
           </div>

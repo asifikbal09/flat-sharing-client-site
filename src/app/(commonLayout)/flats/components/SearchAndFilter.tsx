@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -17,7 +18,9 @@ import {
 } from "@radix-ui/react-select";
 import { Slider } from "@radix-ui/react-slider";
 import { Filter, Search } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 
 const mockFlats = [
   {
@@ -144,18 +147,30 @@ const SearchAndFilter = () => {
     setSearchQuery("");
   };
 
+  const { register, handleSubmit } = useForm();
+  const router = useRouter();
+  const onSubmit = (data: FieldValues) => {
+    router.push(`/flats?search=${data.searchTerm}`);
+  };
+
   return (
     <div className="flex flex-col md:flex-row gap-4 mb-8">
-      <div className="relative flex-1">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-        <Input
-          placeholder="Search by location or title..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-12 h-12 bg-card border-border/50"
-        />
-      </div>
-
+      <form onSubmit={handleSubmit(onSubmit)} className="flex-1">
+        <div className="relative flex-1">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Input
+            placeholder="Search by location or title..."
+            {...register("searchTerm")}
+            className="pl-12 h-12 bg-card border-border/50"
+          />
+          <Button
+            type="submit"
+            className="absolute right-2 top-1/2 -translate-y-1/2 h-8 px-4 bg-gradient-primary"
+          >
+            Search
+          </Button>
+        </div>
+      </form>
       <Select value={sortBy} onValueChange={setSortBy}>
         <SelectTrigger className="w-full md:w-48 h-12">
           <SelectValue placeholder="Sort by" />

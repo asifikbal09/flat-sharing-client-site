@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import UserDashboardSidebar from "../components/userSideber";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import UserDashboardNavber from "../components/UserDashboardNavber";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: "FlatMate - Find Your Perfect Flatmate",
@@ -16,14 +17,22 @@ export default async function UserDashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await userInfo();
+  const cookie = await cookies();
+
+  const res = await fetch(`${process.env.BACKEND_LINK}/profile`, {
+    cache: "no-store",
+    headers: {
+      Authorization: cookie.get("accessToken")?.value || "",
+    },
+  });
+  const data = await res.json();
+
+  const userData = data.data;
   return (
     <div>
       <SidebarProvider>
-        <UserDashboardSidebar />
-        <UserDashboardNavber>
-        {children}
-        </UserDashboardNavber>
+        <UserDashboardSidebar userData={userData} />
+        <UserDashboardNavber>{children}</UserDashboardNavber>
       </SidebarProvider>
     </div>
   );

@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 
 import FlatCard from "@/components/landing/FlatCard";
 import { TFlat } from "@/components/landing/FeatueredFlat";
+import SearchAndFilter from "./components/SearchAndFilter";
+import { Input } from "@/components/ui/input";
 
 const Flats = async () => {
   // data fetching
   const res = await fetch(`${process.env.BACKEND_LINK}/flats`, {
-    cache: "force-cache",
+    cache: "no-store",
   });
   const { data: flats } = await res.json();
 
@@ -27,6 +29,7 @@ const Flats = async () => {
           </div>
 
           {/* Search and Filter Bar */}
+          <SearchAndFilter />
 
           {/* Active Filters */}
           {/* {(priceRange[0] > 0 ||

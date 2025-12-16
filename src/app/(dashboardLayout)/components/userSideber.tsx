@@ -28,18 +28,31 @@ const menuItems = [
   { title: "Settings", url: "/dashboard/settings", icon: Settings },
 ];
 
-const UserDashboardSidebar = () => {
-    
-    const [disabled, setDisabled] = useState(false);
-    const route = useRouter()
+export type TUserProps = {
+  id: string;
+  userId: string;
+  email: string;
+  name: string;
+  imageUrl: string;
+  bio: string;
+  profession: string;
+  address: string;
+  createdAt: string;
+  updatedAt: string;
+};
 
-    const handleLogout = async () => {
-        setDisabled(true);
-        await logOut()
-        route.push("/")
-        toast.success("Logged out successfully!");
-        setDisabled(false);
-    }
+const UserDashboardSidebar = ({ userData }: { userData: TUserProps }) => {
+  const [disabled, setDisabled] = useState(false);
+  const route = useRouter();
+  console.log(userData);
+
+  const handleLogout = async () => {
+    setDisabled(true);
+    await logOut();
+    route.push("/");
+    toast.success("Logged out successfully!");
+    setDisabled(false);
+  };
 
   return (
     <Sidebar className="border-r border-border">
@@ -49,8 +62,8 @@ const UserDashboardSidebar = () => {
             <User className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <p className="font-semibold text-foreground">Asif Ikbal</p>
-            <p className="text-xs text-muted-foreground">asif@mail.com</p>
+            <p className="font-semibold text-foreground">{userData.name}</p>
+            <p className="text-xs text-muted-foreground">{userData.email}</p>
           </div>
         </div>
       </SidebarHeader>
@@ -65,9 +78,7 @@ const UserDashboardSidebar = () => {
                   <SidebarMenuButton asChild>
                     <Link
                       href={item.url}
-                      
                       className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted/50 transition-colors"
-
                     >
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
@@ -81,7 +92,12 @@ const UserDashboardSidebar = () => {
       </SidebarContent>
 
       <SidebarFooter className="p-4 border-t border-border">
-        <Button disabled={disabled} onClick={handleLogout} variant="ghost" className="w-full justify-start gap-3 text-muted-foreground hover:text-destructive">
+        <Button
+          disabled={disabled}
+          onClick={handleLogout}
+          variant="ghost"
+          className="w-full justify-start gap-3 text-muted-foreground hover:text-destructive"
+        >
           <LogOut className="h-4 w-4" />
           <span>Logout</span>
         </Button>

@@ -12,6 +12,7 @@ const Flats = async () => {
     cache: "no-store",
   });
   const { data: flats } = await res.json();
+  console.log(flats);
 
   return (
     <div className="min-h-screen bg-background">
@@ -24,7 +25,7 @@ const Flats = async () => {
               Find Your Perfect <span className="text-gradient">Flat</span>
             </h1>
             <p className="text-muted-foreground">
-              Browse through {flats.length} available flats
+              Browse through {flats?.length || 0} available flats
             </p>
           </div>
 
@@ -64,7 +65,7 @@ const Flats = async () => {
           </p> */}
 
           {/* Flats Grid */}
-          {flats.length > 0 ? (
+          {flats?.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {flats.map((flat: TFlat, index: number) => (
                 <FlatCard key={flat.id} flat={flat} index={index} />

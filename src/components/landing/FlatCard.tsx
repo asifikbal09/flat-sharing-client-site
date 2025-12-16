@@ -11,6 +11,7 @@ type FlatCardProps = {
 };
 
 const FlatCard = ({ flat, index }: FlatCardProps) => {
+  console.log(flat);
   const { imageUrls, title, description, rent, totalBedrooms, location } = flat;
 
   return (
@@ -55,6 +56,7 @@ const FlatCard = ({ flat, index }: FlatCardProps) => {
         <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
           {description}
         </p>
+        <p className="text-xs text-muted-foreground mb-3">Posted by Admin</p>
 
         <div className="flex items-center justify-between pt-4 border-t border-border">
           <div className="flex items-center gap-1.5 text-muted-foreground">

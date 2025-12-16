@@ -20,6 +20,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { set } from "zod";
+import { useAuth } from "@/lib/AuthProviders";
 
 const menuItems = [
   { title: "Profile", url: "/dashboard", icon: User },
@@ -46,9 +47,12 @@ const UserDashboardSidebar = ({ userData }: { userData: TUserProps }) => {
   const route = useRouter();
   console.log(userData);
 
+  const { setUser } = useAuth();
+
   const handleLogout = async () => {
     setDisabled(true);
     await logOut();
+    setUser(null);
     route.push("/");
     toast.success("Logged out successfully!");
     setDisabled(false);
@@ -62,8 +66,8 @@ const UserDashboardSidebar = ({ userData }: { userData: TUserProps }) => {
             <User className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <p className="font-semibold text-foreground">{userData.name}</p>
-            <p className="text-xs text-muted-foreground">{userData.email}</p>
+            <p className="font-semibold text-foreground">{userData?.name}</p>
+            <p className="text-xs text-muted-foreground">{userData?.email}</p>
           </div>
         </div>
       </SidebarHeader>

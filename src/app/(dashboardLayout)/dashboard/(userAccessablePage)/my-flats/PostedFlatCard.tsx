@@ -3,21 +3,46 @@ import { TFlat } from "@/components/landing/FeatueredFlat";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import React from "react";
+import React, { useState } from "react";
 import { Bed, DollarSign, Edit, MapPin, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { set } from "zod";
+import CustomModal from "@/components/modal/CustomModal";
+import {
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Dialog } from "@radix-ui/react-dialog";
+import { deleteFlat } from "@/utils/actions/flatActions";
 
 const PostedFlatCard = ({ flat }: { flat: TFlat }) => {
+  const [action, setAction] = useState("");
   const { id, imageUrls, title, description, rent, totalBedrooms, location } =
     flat;
 
   const handleEdit = (id: string) => {
+    setAction("edit");
     toast.info(`Editing flat #${id}`);
   };
 
-  const handleDelete = (id: string) => {
-    toast.error(`Flat #${id} deleted`);
+  const handleDelete = async (id: string) => {
+    const toastId = toast.loading("Deleting flat...");
+    setAction("delete");
+    const res = await deleteFlat(id);
+    if (!res?.success) {
+      toast.error(`Failed to delete flat ${title}`, {
+        id: toastId,
+      });
+      return;
+    }
+    toast.success(`Flat ${title} deleted successfully`, {
+      id: toastId,
+    });
   };
   return (
     <Card className="overflow-hidden">
@@ -48,25 +73,58 @@ const PostedFlatCard = ({ flat }: { flat: TFlat }) => {
           </div>
         </div>
 
-        <div className="flex gap-2 pt-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1"
-            onClick={() => handleEdit(id)}
-          >
-            <Edit className="h-4 w-4 mr-1" />
-            Edit
-          </Button>
-          <Button
-            variant="destructive"
-            size="sm"
-            className="flex-1"
-            onClick={() => handleDelete(id)}
-          >
-            <Trash2 className="h-4 w-4 mr-1" />
-            Delete
-          </Button>
+        <div className="flex justify-center gap-3 pt-2">
+          <CustomModal>
+            <DialogTrigger asChild>
+              <Button className="flex-1" variant="outline">
+                <Edit className="" /> Edit
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-lg">
+              <DialogHeader>
+                <DialogTitle>Edit profile</DialogTitle>
+                <DialogDescription>
+                  Make changes to your profile here. Click save when you&apos;re
+                  done.
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </CustomModal>
+
+          <CustomModal>
+            <DialogTrigger asChild>
+              <Button className="flex-1" variant="destructive">
+                <Trash2 className="" /> Delete
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-lg">
+              <DialogHeader>
+                <DialogTitle>Delete Flat</DialogTitle>
+              </DialogHeader>
+              <div>
+                <h3 className="text-xl font-semibold">
+                  Are you sure you want to delete this flat?
+                </h3>
+                <p className="text-muted-foreground my-4">
+                  This action cannot be undone. This will permanently delete
+                  your flat post.
+                </p>
+                <div className="flex justify-end gap-2">
+                  <DialogClose asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </DialogClose>
+                  <DialogClose asChild>
+                    <Button
+                      onClick={() => handleDelete(id)}
+                      variant="destructive"
+                    >
+                      Delete
+                    </Button>
+                  </DialogClose>
+                </div>
+              </div>
+            </DialogContent>
+          </CustomModal>
         </div>
       </CardContent>
     </Card>

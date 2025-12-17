@@ -8,6 +8,18 @@ import { cookies } from "next/headers";
 import { userInfo } from "@/utils/userInfo";
 import PostedFlatCard from "./PostedFlatCard";
 import { TFlat } from "@/components/landing/FeatueredFlat";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const MyFlatPosts = async () => {
   const user = await userInfo();
@@ -20,6 +32,7 @@ const MyFlatPosts = async () => {
         Authorization: cookie.get("accessToken")?.value || "",
       },
       cache: "no-store",
+      next: { tags: ["PostedFlats"] },
     }
   );
   const data = await res.json();
@@ -36,7 +49,36 @@ const MyFlatPosts = async () => {
             Manage your posted flats for sharing
           </p>
         </div>
-        <Button>+ Add New Flat</Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>+ Add New Flat</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Add Flat</DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-4">
+              <div className="grid gap-3">
+                <Label htmlFor="name-1">Name</Label>
+                <Input id="name-1" name="name" defaultValue="Pedro Duarte" />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="username-1">Username</Label>
+                <Input
+                  id="username-1"
+                  name="username"
+                  defaultValue="@peduarte"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <Button type="submit">Save changes</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       {postedFlats.length === 0 ? (

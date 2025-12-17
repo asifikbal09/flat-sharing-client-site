@@ -55,7 +55,8 @@ const PostedFlatCard = ({ flat }: { flat: TFlat }) => {
         />
         <Badge className="absolute top-2 right-2 bg-primary">Active</Badge>
       </div>
-      <CardContent className="p-4 space-y-3">
+      <CardContent className="p-2 space-y-3">
+        <h3 className="text-lg font-semibold">{title}</h3>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <MapPin className="h-4 w-4" />
           <span>{location}</span>

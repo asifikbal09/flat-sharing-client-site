@@ -18,17 +18,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { cookies } from "next/headers";
 import Image from "next/image";
-
-// Mock data - replace with real data later
-const recentPosts = [
-  {
-    id: 1,
-    location: "Gulshan, Dhaka",
-    rent: 15000,
-    bedrooms: 2,
-    createdAt: "2024-01-15",
-  },
-];
+import RecentPost from "./components/RecentPost";
+import { userInfo } from "@/utils/userInfo";
 
 const recentRequests = [
   {
@@ -52,6 +43,8 @@ const UserDashboard = async () => {
   };
   const cookie = await cookies();
 
+  const user = await userInfo();
+
   const res = await fetch(`${process.env.BACKEND_LINK}/profile`, {
     cache: "no-store",
     headers: {
@@ -60,8 +53,20 @@ const UserDashboard = async () => {
   });
   const data = await res.json();
 
-  const userData = data.data;
-  console.log(userData);
+  const userData = data?.data;
+
+  const response = await fetch(
+    `${process.env.BACKEND_LINK}/flats?userId=${user?.id}`,
+    {
+      headers: {
+        Authorization: cookie.get("accessToken")?.value || "",
+      },
+      cache: "no-store",
+      next: { tags: ["PostedFlat"] },
+    }
+  );
+  const flats = await response.json();
+  console.log(flats);
   return (
     <div className="space-y-6">
       {/* Profile Header Card */}
@@ -120,57 +125,7 @@ const UserDashboard = async () => {
       </Card>
 
       {/* Recent Posts Section */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Home className="h-5 w-5" />
-            Recent Posts
-          </CardTitle>
-          <CardDescription>Your recently posted flats</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {recentPosts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-8 text-center">
-              <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                <Home className="h-8 w-8 text-muted-foreground" />
-              </div>
-              <h4 className="text-lg font-medium text-foreground mb-1">
-                No Posts Yet
-              </h4>
-              <p className="text-muted-foreground text-sm max-w-sm">
-                You havent posted any flats for sharing yet. Start by creating
-                your first post!
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {recentPosts.map((post) => (
-                <div
-                  key={post.id}
-                  className="flex items-center justify-between p-4 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <Home className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-medium">{post.location}</p>
-                      <p className="text-sm text-muted-foreground">
-                        ৳{post.rent.toLocaleString()}/month • {post.bedrooms}{" "}
-                        bedroom
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Clock className="h-4 w-4" />
-                    {post.createdAt}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <RecentPost flats={flats?.data?.slice(0, 3)} />
 
       {/* Recent Requests Section */}
       <Card>

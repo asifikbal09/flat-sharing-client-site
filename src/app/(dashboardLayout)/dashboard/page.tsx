@@ -59,7 +59,7 @@ const UserDashboard = async () => {
   const flats = await response.json();
 
   const respon = await fetch(
-    `${process.env.BACKEND_LINK}//booking-requests/user`,
+    `${process.env.BACKEND_LINK}/booking-requests/user`,
     {
       headers: {
         Authorization: cookie.get("accessToken")?.value || "",
@@ -69,6 +69,7 @@ const UserDashboard = async () => {
     }
   );
   const requests = await respon.json();
+  console.log(requests);
 
   return (
     <div className="space-y-6">

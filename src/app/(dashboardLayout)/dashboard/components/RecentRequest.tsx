@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { FileQuestion, MapPin } from "lucide-react";
-import React from "react";
 
 const RecentRequest = ({ recentRequests }: { recentRequests: any[] }) => {
   const getStatusColor = (status: string) => {
@@ -31,7 +30,7 @@ const RecentRequest = ({ recentRequests }: { recentRequests: any[] }) => {
         <CardDescription>Your recent flat sharing requests</CardDescription>
       </CardHeader>
       <CardContent>
-        {recentRequests.length === 0 ? (
+        {recentRequests?.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-8 text-center">
             <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center mb-4">
               <FileQuestion className="h-8 w-8 text-muted-foreground" />
@@ -46,7 +45,7 @@ const RecentRequest = ({ recentRequests }: { recentRequests: any[] }) => {
           </div>
         ) : (
           <div className="space-y-3">
-            {recentRequests.map((request) => (
+            {recentRequests?.map((request) => (
               <div
                 key={request.id}
                 className="flex items-center justify-between p-4 rounded-lg border bg-card hover:bg-accent/50 transition-colors"

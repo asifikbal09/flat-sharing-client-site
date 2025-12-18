@@ -13,7 +13,6 @@ export async function flatRequest(payload: any) {
   });
 
   const data = await res.json();
-  console.log(data);
 
   return data;
 }

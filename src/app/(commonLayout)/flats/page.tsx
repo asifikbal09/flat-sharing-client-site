@@ -30,38 +30,6 @@ const Flats = async () => {
           {/* Search and Filter Bar */}
           <SearchAndFilter />
 
-          {/* Active Filters */}
-          {/* {(priceRange[0] > 0 ||
-            priceRange[1] < 100000 ||
-            selectedBedrooms !== "all") && (
-            <div className="flex flex-wrap gap-2 mb-6">
-              {priceRange[0] > 0 || priceRange[1] < 100000 ? (
-                <Badge variant="secondary" className="gap-1">
-                  ₹{priceRange[0].toLocaleString()} - ₹
-                  {priceRange[1].toLocaleString()}
-                  <X
-                    className="h-3 w-3 cursor-pointer"
-                    onClick={() => setPriceRange([0, 100000])}
-                  />
-                </Badge>
-              ) : null}
-              {selectedBedrooms !== "all" && (
-                <Badge variant="secondary" className="gap-1">
-                  {selectedBedrooms} Bedroom(s)
-                  <X
-                    className="h-3 w-3 cursor-pointer"
-                    onClick={() => setSelectedBedrooms("all")}
-                  />
-                </Badge>
-              )}
-            </div>
-          )} */}
-
-          {/* Results Count */}
-          {/* <p className="text-sm text-muted-foreground mb-6">
-            Showing {sortedFlats.length} of {mockFlats.length} flats
-          </p> */}
-
           {/* Flats Grid */}
           {flats?.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

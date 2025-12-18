@@ -91,6 +91,7 @@ const Hero = () => {
                   alt="Happy flatmates enjoying their cozy apartment"
                   className="w-full h-auto object-cover"
                   unoptimized
+                  loading="lazy"
                 />
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent" />

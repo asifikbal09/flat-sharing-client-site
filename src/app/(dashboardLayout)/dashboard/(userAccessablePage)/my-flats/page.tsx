@@ -52,7 +52,7 @@ const MyFlatPosts = async () => {
         <AddFlatForm />
       </div>
 
-      {postedFlats.length === 0 ? (
+      {postedFlats?.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <p className="text-muted-foreground mb-4">
@@ -63,7 +63,7 @@ const MyFlatPosts = async () => {
         </Card>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {postedFlats.map((flat: TFlat) => (
+          {postedFlats?.map((flat: TFlat) => (
             <PostedFlatCard flat={flat} key={flat.id} />
           ))}
         </div>

@@ -2,7 +2,6 @@
 
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
-import { userInfo } from "../userInfo";
 import { FlatFormData } from "@/app/(dashboardLayout)/components/AddFlatForm";
 
 export async function deleteFlat(id: string) {
@@ -16,6 +15,7 @@ export async function deleteFlat(id: string) {
   });
   const data = await res.json();
   revalidateTag("PostedFlats");
+  revalidateTag("Flats");
   if (data.success === true) {
     return data;
   }

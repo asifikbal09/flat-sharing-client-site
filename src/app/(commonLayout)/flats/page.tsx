@@ -7,7 +7,7 @@ import SearchAndFilter from "./components/SearchAndFilter";
 const Flats = async () => {
   // data fetching
   const res = await fetch(`${process.env.BACKEND_LINK}/flats`, {
-    cache: "no-store",
+    cache: "force-cache",
     next: { tags: ["Flats"] },
   });
   const { data: flats } = await res.json();

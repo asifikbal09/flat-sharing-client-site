@@ -21,7 +21,6 @@ const recentPosts = [
 ];
 
 const RecentPost = ({ flats }: { flats: TFlat[] }) => {
-  console.log(flats);
   return (
     <Card>
       <CardHeader>

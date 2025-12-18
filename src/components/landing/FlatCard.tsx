@@ -11,7 +11,6 @@ type FlatCardProps = {
 };
 
 const FlatCard = ({ flat, index }: FlatCardProps) => {
-  console.log(flat);
   const { imageUrls, title, description, rent, totalBedrooms, location } = flat;
 
   return (

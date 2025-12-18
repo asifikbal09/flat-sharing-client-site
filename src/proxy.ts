@@ -20,7 +20,6 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const cookie = await cookies();
   const accessToken = cookie.get("accessToken")?.value;
-  console.log("token", accessToken);
   if (!accessToken) {
     if (AuthRouts.includes(pathname)) {
       return NextResponse.next();

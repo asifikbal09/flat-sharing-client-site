@@ -66,7 +66,6 @@ const UserDashboard = async () => {
     }
   );
   const flats = await response.json();
-  console.log(flats);
   return (
     <div className="space-y-6">
       {/* Profile Header Card */}

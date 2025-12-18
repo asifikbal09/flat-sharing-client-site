@@ -3,7 +3,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const tokenFromCookie = async () => {
   const user = await userInfo();
-  console.log(user);
   return "lsdkfj";
 };
 

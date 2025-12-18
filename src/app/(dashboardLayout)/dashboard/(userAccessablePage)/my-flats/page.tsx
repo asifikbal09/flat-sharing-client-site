@@ -38,7 +38,6 @@ const MyFlatPosts = async () => {
   const data = await res.json();
 
   const postedFlats = data.data;
-  console.log(postedFlats);
 
   return (
     <div className="space-y-6">

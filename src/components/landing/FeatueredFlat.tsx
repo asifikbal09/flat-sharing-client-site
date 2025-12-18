@@ -28,7 +28,6 @@ const FeaturedFlats = async () => {
     cache: "default",
   });
   const { data: flats } = await res.json();
-  console.log(flats);
 
   return (
     <section className="py-20 bg-gradient-to-b from-muted/30 to-background">

@@ -45,7 +45,6 @@ export type TUserProps = {
 const UserDashboardSidebar = ({ userData }: { userData: TUserProps }) => {
   const [disabled, setDisabled] = useState(false);
   const route = useRouter();
-  console.log(userData);
 
   const { setUser } = useAuth();
 

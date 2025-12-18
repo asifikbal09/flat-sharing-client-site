@@ -1,18 +1,16 @@
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 import FlatCard from "@/components/landing/FlatCard";
 import { TFlat } from "@/components/landing/FeatueredFlat";
 import SearchAndFilter from "./components/SearchAndFilter";
-import { Input } from "@/components/ui/input";
 
 const Flats = async () => {
   // data fetching
   const res = await fetch(`${process.env.BACKEND_LINK}/flats`, {
     cache: "no-store",
+    next: { tags: ["Flats"] },
   });
   const { data: flats } = await res.json();
-  console.log(flats);
 
   return (
     <div className="min-h-screen bg-background">

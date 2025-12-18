@@ -22,11 +22,28 @@ export async function deleteFlat(id: string) {
 }
 
 export async function addFlat(payload: FlatFormData & { imageUrls: string[] }) {
-  console.log(payload);
   const cookie = await cookies();
-  const user = await userInfo();
   const res = await fetch(`${process.env.BACKEND_LINK}/flats`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: cookie.get("accessToken")?.value || "",
+    },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  revalidateTag("PostedFlats");
+  revalidateTag("Flats");
+  return data;
+}
+
+export async function editFlat(
+  payload: FlatFormData & { imageUrls: string[] },
+  flatId: string
+) {
+  const cookie = await cookies();
+  const res = await fetch(`${process.env.BACKEND_LINK}/flats/${flatId}`, {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
       authorization: cookie.get("accessToken")?.value || "",

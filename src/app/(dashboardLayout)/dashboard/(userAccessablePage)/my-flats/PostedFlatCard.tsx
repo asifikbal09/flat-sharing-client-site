@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { Dialog } from "@radix-ui/react-dialog";
 import { deleteFlat } from "@/utils/actions/flatActions";
+import { EditFlatForm } from "@/app/(dashboardLayout)/components/EditFlatForm";
 
 const PostedFlatCard = ({ flat }: { flat: TFlat }) => {
   const [action, setAction] = useState("");
@@ -75,22 +76,7 @@ const PostedFlatCard = ({ flat }: { flat: TFlat }) => {
         </div>
 
         <div className="flex justify-center gap-3 pt-2">
-          <CustomModal>
-            <DialogTrigger asChild>
-              <Button className="flex-1" variant="outline">
-                <Edit className="" /> Edit
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-lg">
-              <DialogHeader>
-                <DialogTitle>Edit profile</DialogTitle>
-                <DialogDescription>
-                  Make changes to your profile here. Click save when you&apos;re
-                  done.
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </CustomModal>
+          <EditFlatForm flat={flat} />
 
           <CustomModal>
             <DialogTrigger asChild>

@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cookies } from "next/headers";
-import Image from "next/image";
 import RecentPost from "./components/RecentPost";
 import { userInfo } from "@/utils/userInfo";
 
@@ -52,6 +51,7 @@ const UserDashboard = async () => {
     },
   });
   const data = await res.json();
+  console.log(data);
 
   const userData = data?.data;
 

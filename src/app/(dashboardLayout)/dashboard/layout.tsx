@@ -6,6 +6,8 @@ import UserDashboardSidebar from "../components/userSideber";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import UserDashboardNavber from "../components/UserDashboardNavber";
 import { cookies } from "next/headers";
+import { useAuth } from "@/lib/AuthProviders";
+import { logOut } from "@/utils/actions/logoutUser";
 
 export const metadata: Metadata = {
   title: "FlatMate - Find Your Perfect Flatmate",

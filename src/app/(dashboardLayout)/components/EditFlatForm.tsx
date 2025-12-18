@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { X, Plus, Upload } from "lucide-react";
+import { X, Plus, Upload, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -24,7 +24,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { addFlat } from "@/utils/actions/flatActions";
+import { addFlat, editFlat } from "@/utils/actions/flatActions";
+import { TFlat } from "@/components/landing/FeatueredFlat";
 
 const flatSchema = z
   .object({
@@ -45,27 +46,27 @@ const flatSchema = z
 
 export type FlatFormData = z.infer<typeof flatSchema>;
 
-interface AddFlatFormProps {
+interface EditFlatFormProps {
   onSubmit?: (data: FlatFormData & { imageUrls: string[] }) => void;
 }
 
-export function AddFlatForm() {
+export function EditFlatForm({ flat }: { flat: TFlat }) {
   const [open, setOpen] = useState(false);
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [imageUrls, setImageUrls] = useState<string[]>(flat.imageUrls || []);
   const [newImageUrl, setNewImageUrl] = useState("");
 
   const form = useForm<FlatFormData>({
     defaultValues: {
-      title: "",
-      squareFeet: 0,
-      totalBedrooms: 0,
-      totalRooms: 0,
-      utilitiesDescription: "",
-      location: "",
-      description: "",
-      rent: 0,
-      availability: true,
-      advanceAmount: 0,
+      title: flat.title,
+      squareFeet: flat.squareFeet,
+      totalBedrooms: flat.totalBedrooms,
+      totalRooms: flat.totalRooms,
+      utilitiesDescription: flat.utilitiesDescription,
+      location: flat.location,
+      description: flat.description,
+      rent: flat.rent,
+      availability: flat.availability,
+      advanceAmount: flat.advanceAmount,
     },
   });
 
@@ -90,31 +91,28 @@ export function AddFlatForm() {
       imageUrls,
     };
     console.log(flatData);
-    const res = await addFlat(flatData);
+    const res = await editFlat(flatData, flat.id);
     if (res.success) {
-      toast.success("Flat added successfully");
+      toast.success("Flat info updated successfully");
       form.reset();
       setOpen(false);
       setImageUrls([]);
     } else {
-      toast.error("Failed to add flat");
+      toast.error("Failed to update flat info");
     }
-    //
-
-    // ;
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Flat
+        <Button variant="outline">
+          <Edit className="h-4 w-4 mr-2" />
+          Edit Flat
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Add New Flat</DialogTitle>
+          <DialogTitle>Edit Flat</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>

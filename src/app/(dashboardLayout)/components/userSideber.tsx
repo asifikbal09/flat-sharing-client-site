@@ -26,6 +26,7 @@ const menuItems = [
   { title: "Profile", url: "/dashboard", icon: User },
   { title: "My Flat Posts", url: "/dashboard/my-flats", icon: Home },
   { title: "My Requests", url: "/dashboard/my-requests", icon: FileText },
+  { title: "Requests on My Flats", url: "/dashboard/requests", icon: FileText },
   { title: "Settings", url: "/dashboard/settings", icon: Settings },
 ];
 

@@ -5,7 +5,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 const AuthRouts = ["/login", "/register"];
 const roleBasedPrivateRoutes = {
-  user: [/^\/dashboard$/, "my-flats", "my-requests", "setting", /^\/flats/],
+  user: [
+    /^\/dashboard$/,
+    "my-flats",
+    "my-requests",
+    "setting",
+    "requests",
+    /^\/flats/,
+  ],
   admin: [/^\/dashboard\/admin/],
 };
 type Role = keyof typeof roleBasedPrivateRoutes;

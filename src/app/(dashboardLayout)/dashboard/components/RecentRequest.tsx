@@ -63,7 +63,15 @@ const RecentRequest = ({ recentRequests }: { recentRequests: any[] }) => {
                       {request.flat.location}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Requested on {request.createdAt}
+                      Requested on{" "}
+                      {new Date(request?.createdAt).toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        }
+                      )}
                     </p>
                   </div>
                 </div>

@@ -28,7 +28,7 @@ export const generateStaticParams = async () => {
   const { data: flats } = await res.json();
 
   return flats?.slice(0, 6).map((flat: TFlat) => ({
-    flatId: flat.id,
+    flatId: flat?.id,
   }));
 };
 
@@ -57,8 +57,8 @@ const FlatDetails = async ({ params }: TParams) => {
             <div className="lg:col-span-2 space-y-6">
               {/* Image Gallery */}
               <FlatCarousel
-                imageUrls={flat.imageUrls}
-                availability={flat.availability}
+                imageUrls={flat?.imageUrls}
+                availability={flat?.availability}
               />
 
               {/* Description */}
@@ -68,7 +68,7 @@ const FlatDetails = async ({ params }: TParams) => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground leading-relaxed">
-                    {flat.description}
+                    {flat?.description}
                   </p>
                 </CardContent>
               </Card>
@@ -83,7 +83,7 @@ const FlatDetails = async ({ params }: TParams) => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground leading-relaxed">
-                    {flat.utilitiesDescription}
+                    {flat?.utilitiesDescription}
                   </p>
                 </CardContent>
               </Card>
@@ -101,10 +101,10 @@ const FlatDetails = async ({ params }: TParams) => {
                       </p>
                       <p className="text-3xl font-bold text-foreground flex items-center">
                         <DollarSign className="h-6 w-6" />
-                        {flat.rent.toLocaleString()}
+                        {flat?.rent.toLocaleString()}
                       </p>
                     </div>
-                    {flat.availability ? (
+                    {flat?.availability ? (
                       <CheckCircle className="h-8 w-8 text-green-500" />
                     ) : (
                       <XCircle className="h-8 w-8 text-destructive" />
@@ -117,7 +117,7 @@ const FlatDetails = async ({ params }: TParams) => {
                       Advance Amount
                     </span>
                     <span className="font-semibold">
-                      ${flat.advanceAmount.toLocaleString()}
+                      ${flat?.advanceAmount.toLocaleString()}
                     </span>
                   </div>
 
@@ -131,7 +131,7 @@ const FlatDetails = async ({ params }: TParams) => {
                         <p className="text-xs text-muted-foreground">
                           Bedrooms
                         </p>
-                        <p className="font-semibold">{flat.totalBedrooms}</p>
+                        <p className="font-semibold">{flat?.totalBedrooms}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
@@ -140,14 +140,16 @@ const FlatDetails = async ({ params }: TParams) => {
                         <p className="text-xs text-muted-foreground">
                           Total Rooms
                         </p>
-                        <p className="font-semibold">{flat.totalRooms}</p>
+                        <p className="font-semibold">{flat?.totalRooms}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
                       <Home className="h-5 w-5 text-primary" />
                       <div>
                         <p className="text-xs text-muted-foreground">Area</p>
-                        <p className="font-semibold">{flat.squareFeet} sq.ft</p>
+                        <p className="font-semibold">
+                          {flat?.squareFeet} sq.ft
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
@@ -155,7 +157,7 @@ const FlatDetails = async ({ params }: TParams) => {
                       <div>
                         <p className="text-xs text-muted-foreground">Posted</p>
                         <p className="font-semibold text-xs">
-                          {new Date(flat.createdAt).toLocaleDateString(
+                          {new Date(flat?.createdAt).toLocaleDateString(
                             "en-US",
                             {
                               year: "numeric",
@@ -175,7 +177,7 @@ const FlatDetails = async ({ params }: TParams) => {
                     <MapPin className="h-5 w-5 text-primary mt-0.5" />
                     <div>
                       <p className="text-xs text-muted-foreground">Location</p>
-                      <p className="font-medium text-sm">{flat.location}</p>
+                      <p className="font-medium text-sm">{flat?.location}</p>
                     </div>
                   </div>
 
@@ -188,7 +190,7 @@ const FlatDetails = async ({ params }: TParams) => {
                       size="lg"
                       asChild
                     >
-                      <Link href={`/flats/${flat.id}/request`}>
+                      <Link href={`/flats/${flat?.id}/request`}>
                         <MessageSquare className="h-4 w-4" />
                         Request Flat Share
                       </Link>

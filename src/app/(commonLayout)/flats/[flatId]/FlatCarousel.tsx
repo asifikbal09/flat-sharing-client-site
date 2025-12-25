@@ -20,7 +20,7 @@ const FlatCarousel = ({ imageUrls, availability }: FlatCarouselProps) => {
 
   const prevImage = () => {
     setCurrentImageIndex((prev) =>
-      prev === 0 ? imageUrls.length - 1 : prev - 1
+      prev === 0 ? imageUrls?.length - 1 : prev - 1
     );
   };
 

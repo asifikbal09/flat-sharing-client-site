@@ -17,7 +17,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Dialog } from "@radix-ui/react-dialog";
 import { deleteFlat } from "@/utils/actions/flatActions";
 import { EditFlatForm } from "@/app/(dashboardLayout)/components/EditFlatForm";
 

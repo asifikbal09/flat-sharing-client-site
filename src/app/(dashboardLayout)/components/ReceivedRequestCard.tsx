@@ -15,6 +15,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
+import { requestStatusUpdate } from "@/utils/actions/requestsAction";
+import { toast } from "sonner";
 
 const statusConfig = {
   PENDING: {
@@ -78,9 +80,17 @@ const ReceivedRequestCard = ({
   requests: ReceivedRequestCardProps[];
 }) => {
   console.log(requests);
-  const handleApprove = (id: string) => {};
 
-  const handleReject = (id: string) => {};
+  const handleStatusChange = async (requestId: string, newStatus: string) => {
+    const toastId = toast.loading("Updating request status...");
+    const res = await requestStatusUpdate(requestId, newStatus);
+    console.log(res);
+    if (res.success) {
+      toast.success("Request status updated successfully", { id: toastId });
+    } else {
+      toast.error("Failed to update request status", { id: toastId });
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -157,14 +167,18 @@ const ReceivedRequestCard = ({
                           size="sm"
                           variant="outline"
                           className="text-destructive hover:bg-destructive hover:text-destructive-foreground"
-                          onClick={() => handleReject(request.id)}
+                          onClick={() =>
+                            handleStatusChange(request.id, "REJECTED")
+                          }
                         >
                           <XCircle className="h-4 w-4 mr-1" />
                           Reject
                         </Button>
                         <Button
                           size="sm"
-                          onClick={() => handleApprove(request.id)}
+                          onClick={() =>
+                            handleStatusChange(request.id, "BOOKED")
+                          }
                         >
                           <CheckCircle className="h-4 w-4 mr-1" />
                           Approve

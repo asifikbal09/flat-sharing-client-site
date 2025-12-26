@@ -10,6 +10,7 @@ const FlatRequestsReceived = async () => {
   const res = await fetch(
     `${process.env.BACKEND_LINK}/booking-requests/user/flats`,
     {
+      next: { tags: ["UserRequests"] },
       cache: "no-store",
       headers: {
         Authorization: `${cookie.get("accessToken")?.value || ""}`,
